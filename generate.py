@@ -4,6 +4,7 @@ __date__ = "14.03.2021"
 import argparse
 import numpy
 import time
+import os
 
 """
 Скрипт для генерации набора файлов содержащих случайный набор
@@ -24,6 +25,8 @@ def prepareArgs():
                              dest="max_consumer_id", default="1000", required=False)
     args_parser.add_argument("-r", "--max_consumer_res_value", help="Максимальное назначение ресурса для потребителя",
                              dest="max_consumer_res_value", default="10000", required=False)
+    args_parser.add_argument("-f", "--folder", help="Директория для хранения сгенерированных файлов",
+                             dest="folder", default="data", required=False)
     return args_parser
 
 
@@ -48,9 +51,12 @@ def main():
     args_parser = prepareArgs()
     args = args_parser.parse_args()
 
+    if not os.path.exists(args.folder):
+        os.mkdir(args.folder)
+
     for i in range(0, int(args.count)):
         print("Генерируем файл: {}".format(i))
-        filename = "data/file_{}_{}.txt".format(int(time.time()), i)
+        filename = "{}/file_{}_{}.txt".format(args.folder, int(time.time()), i)
         # Генерируем файл с произвольным числом строк от 0 до args.lines
         generateRandomFile(filename, args, numpy.random.randint(int(args.lines)))
 
