@@ -150,12 +150,21 @@ async def main():
 
         tasks = []  # Таски на получение данных из файла
         del_tasks = []  # Таски на удаление строк из файла
+        
+        # TODO: реализовать ограничение на число обрабатываемых файлов и число дочерних процессов
+        # запускаемых тут
+        
         for file in files:
             tasks.append(getConsumerData(file, args.chunk))
 
         results = await asyncio.gather(*tasks)
 
         for res in results:
+            # Здесь res представляет собой кортеж из следущих данных:
+            # res[0] - содержимое буфера stdout дочернего приложения
+            # res[1] - код ошибки, с которой завершился дочерний процесс
+            # res[2] - имя обработанного файла
+            
             if res[1] == 0:
                 data = getDictFromOutput(res[0])
                 print("Обрабатываем результат для файла {}".format(res[2]))
