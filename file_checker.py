@@ -17,7 +17,7 @@ def prepareArgs():
                              dest="directory", default="data/", required=False)
     args_parser.add_argument("-t", "--timer", help="Период проверки файлов",
                              dest="timer", default="10", required=False)
-    args_parser.add_argument("-c", "--chunk", help="Число строк, который вычитываем за раз",
+    args_parser.add_argument("-c", "--chunk", help="Число строк, которые вычитываем за раз",
                              dest="chunk", default="1000", required=False)
     return args_parser
 
@@ -110,6 +110,7 @@ async def main():
     args_parser = prepareArgs()
     args = args_parser.parse_args()
 
+    # TODO: Добавить параметр запуска с именем файла БД
     storage = SQLiteStorage("database.db")
     storage.connect()
 

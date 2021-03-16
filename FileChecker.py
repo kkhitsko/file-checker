@@ -4,9 +4,10 @@ __date__ = "14.03.2021"
 from os import listdir
 from os.path import isfile, join
 
+
 class FileChecker:
 
-    files = None
+    files = []
 
     directory = None
 
@@ -14,8 +15,10 @@ class FileChecker:
         self.directory = args.directory
 
     def getFilesList(self):
-        print("Try to get files in directory: {}".format(self.directory))
-        self.files = [join(self.directory, f) for f in listdir(self.directory) if isfile(join(self.directory, f))]
-        print("Directory {} contain {} files".format(self.directory,len(self.files)))
+        try:
+            print("Try to get files in directory: {}".format(self.directory))
+            self.files = [join(self.directory, f) for f in listdir(self.directory) if isfile(join(self.directory, f))]
+        except FileNotFoundError as error:
+            print("Ошибка при получении списка файлов: {}".format(error))
+        print("Directory {} contain {} files".format(self.directory, len(self.files)))
         return self.files
-
