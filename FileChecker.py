@@ -4,7 +4,9 @@ __date__ = "14.03.2021"
 from os import listdir
 from os.path import isfile, join
 
-
+"""
+Класс для работы с содержимом директоририи и получения и фильтрации списка файлов
+"""
 class FileChecker:
 
     files = []
