@@ -9,6 +9,16 @@ import time
 from SQLiteStorage import SQLiteStorage
 from FileChecker import FileChecker
 
+def str2bool(v):
+    if isinstance(v, bool):
+       return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
 
 def prepareArgs():
     desc = "Сервис для анализа содержимого файлов"
@@ -19,6 +29,9 @@ def prepareArgs():
                              dest="timer", default="10", required=False)
     args_parser.add_argument("-c", "--chunk", help="Число строк, которые вычитываем за раз",
                              dest="chunk", default="1000", required=False)
+    args_parser.add_argument("-e", "--erase", type=str2bool,
+                             required=False, help="Очищать таблицы базы данных при запуске?",
+                             nargs='?', const=True, default=False)
     return args_parser
 
 
@@ -115,8 +128,9 @@ async def main():
     storage.connect()
 
     # При перовом запуске программы очищаем содержимое БД хранения
-
-    storage.clearAll()
+    # если есть соотвествующая опция запуска
+    if args.erase:
+        storage.clearAll()
 
     # TODO: Предусмотреть то, что основаня программа в предыдущий раз
     #     могла завершиться с ошибкой. В таком случае очищать БД не стоит

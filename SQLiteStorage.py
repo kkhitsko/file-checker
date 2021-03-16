@@ -98,6 +98,7 @@ class SQLiteStorage(Storage):
         return value
 
     def clearAll(self):
+        print("Очищаем содержимое таблицы")
         cursor = self.connection.cursor()
         cursor.execute(self._delete_all_from_consumer_sql)
         self.commit()
